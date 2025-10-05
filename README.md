@@ -38,7 +38,7 @@ Reasoning: Free or low-cost inference.
 1. Clone the repo:
 
 ```bash
-git clone <repo-url> rag-app
+git clone https://github.com/skafev/rag-system rag-app
 cd rag-app
 ```
 
