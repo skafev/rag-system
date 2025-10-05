@@ -1,0 +1,9 @@
+{
+    "id": 18,
+    "name": "Coffee Maker",
+    "category": "Clothing",
+    "price": 346.43,
+    "in_stock": false,
+    "created_at": "2025-09-12 19:14:24",
+    "description": "This is a sample description for product #18. It demonstrates JSON structure."
+}

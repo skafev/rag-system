@@ -1,0 +1,9 @@
+{
+    "id": 30,
+    "name": "Novel",
+    "category": "Electronics",
+    "price": 158.68,
+    "in_stock": false,
+    "created_at": "2025-10-01 19:14:24",
+    "description": "This is a sample description for product #30. It demonstrates JSON structure."
+}

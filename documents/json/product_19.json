@@ -1,0 +1,9 @@
+{
+    "id": 19,
+    "name": "T-shirt",
+    "category": "Clothing",
+    "price": 217.69,
+    "in_stock": true,
+    "created_at": "2025-08-06 19:14:24",
+    "description": "This is a sample description for product #19. It demonstrates JSON structure."
+}

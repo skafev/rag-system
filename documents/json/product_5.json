@@ -1,0 +1,9 @@
+{
+    "id": 5,
+    "name": "Headphones",
+    "category": "Sports",
+    "price": 296.27,
+    "in_stock": false,
+    "created_at": "2025-08-02 19:14:24",
+    "description": "This is a sample description for product #5. It demonstrates JSON structure."
+}

@@ -1,0 +1,13 @@
+{
+    "id": 999,
+    "name": "   Messy Product   ",
+    "category": "Electronics ",
+    "price": "  123.45  ",
+    "in_stock": " TRUE ",
+    "created_at": "2023-09-01   12:00:00",
+    "description": "   This JSON  has   extra   spaces   everywhere. ",
+    "details": {
+        "size": "  Medium ",
+        "color": " Blue "
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "id": 21,
+    "name": "Bicycle",
+    "category": "Sports",
+    "price": 230.01,
+    "in_stock": true,
+    "created_at": "2025-08-05 19:14:24",
+    "description": "This is a sample description for product #21. It demonstrates JSON structure."
+}
