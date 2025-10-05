@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import Optional, Dict
-from .vector_store import DocumentStore
+from app.vector_store import DocumentStore
 
 
 class SearchRequest(BaseModel):
@@ -82,3 +82,8 @@ def advanced_search(req: SearchRequest):
         return {"query": req.query, "results": results}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("app.main:app", host="127.0.0.1", port=8000, reload=True)
