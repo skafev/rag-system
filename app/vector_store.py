@@ -3,6 +3,7 @@ import json
 import nltk
 import numpy as np
 import os
+import re
 from sentence_transformers import SentenceTransformer, CrossEncoder
 from rank_bm25 import BM25Okapi
 from transformers import pipeline
@@ -77,6 +78,24 @@ class DocumentStore:
         )
         return expanded[0]['generated_text']
 
+    def sanitize_query(self, query: str) -> str:
+        """
+        Prevent prompt injection by removing dangerous instructions.
+        Example: 'ignore previous instructions', 'delete', 'system prompt'
+        """
+        forbidden_patterns = [
+            r"ignore previous instructions",
+            r"delete .*",
+            r"system prompt",
+            r"shutdown",
+            r"format hard drive",
+        ]
+        clean_query = query.lower()
+        for pattern in forbidden_patterns:
+            clean_query = re.sub(pattern, "[REDACTED]", clean_query)
+
+        return clean_query
+
     @cachedmethod(attrgetter("embedding_cache"))
     def embed_text(self, text: str):
         emb = self.embed_model.encode(text)
@@ -108,6 +127,7 @@ class DocumentStore:
 
     def semantic_search(self, query: str, top_k: int = 3, metadata_filter: dict = None):
         """Semantic search."""
+        query = self.sanitize_query(query)
         query_emb = self.embed_text(query)
         results = self.collection.query(
             query_embeddings=[query_emb],
@@ -123,12 +143,15 @@ class DocumentStore:
             print("No results found. (Check if you ingested chunks or try a different query)")
         else:
             for doc, meta in zip(docs, metas):
-                print(f"- {meta['source']} (chunk {meta['chunk_index']})")
+                source = meta.get("source", "unknown")
+                chunk = meta.get("chunk_index", "N/A")
+                print(f"- {source} (chunk {chunk})")
                 print(f"  {doc[:200]}...\n")
         return results
 
     def keyword_search(self, query: str, top_k: int = 3, metadata_filter: dict = None):
         """Keyword search."""
+        query = self.sanitize_query(query)
         query_tokens = word_tokenize(query.lower())
         scores = self.bm25.get_scores(query_tokens)
         top_indices = np.argsort(scores)[-top_k:][::-1]
@@ -153,6 +176,7 @@ class DocumentStore:
                       metadata_filter: dict = None, called_from_advanced: bool = False):
         """Combine semantic + keyword scores with weights."""
         # Semantic
+        query = self.sanitize_query(query)
         query_emb = self.embed_text(query)
         sem_results = self.collection.query(
             query_embeddings=[query_emb],
@@ -190,6 +214,7 @@ class DocumentStore:
     @cachedmethod(attrgetter("query_cache"), key=_query_cache_key)
     def advanced_search(self, query: str, top_k=3, w_semantic=0.7, w_keyword=0.3, metadata_filter=None):
         # Step 1: Query expansion
+        query = self.sanitize_query(query)
         expanded_query = self.expand_query(query)
         print(f"\nExpanded query: {expanded_query}")
         # Step 2: Hybrid search

@@ -1,3 +1,5 @@
+import tempfile
+import shutil
 import pytest
 from app.vector_store import DocumentStore
 
@@ -7,7 +9,8 @@ def store():
     Fixture to create an isolated test collection with known chunks,
     including chunk_index for semantic search compatibility.
     """
-    store = DocumentStore(collection_name="test_collection")
+    temp_dir = tempfile.mkdtemp()
+    store = DocumentStore(collection_name="test_collection", persist_directory=temp_dir)
 
     # Known test chunks
     chunks = [
@@ -21,7 +24,8 @@ def store():
         ids=[str(i) for i in range(len(chunks))]
     )
 
-    return store
+    yield store
+    shutil.rmtree(temp_dir)
 
 
 def get_doc_content(result):

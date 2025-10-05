@@ -20,7 +20,8 @@ Reasoning: Free or low-cost inference.
 8. Scaling strategy (10x–100x)
 9. Monitoring, testing & evaluation
 10. Troubleshooting & common issues
-11. Next steps and optional features
+11. Cost Analysis
+12. Next steps and optional features
 
 ---
 
@@ -476,7 +477,16 @@ store.query_cache.clear()
 
 ---
 
-## 11. Next steps & optional features
+## 11. Cost Analysis
+
+* Hugging Face embeddings (free, runs locally on CPU/GPU).
+* OpenAI embeddings (~$0.0001 per 1K tokens) – switching to OpenAI would cost ~$1–3 for 10K queries..
+* This design keeps compute under $10/month by:
+   * Using local embeddings
+   * Adding caching for repeated queries
+   * Supporting hybrid retrieval to reduce over-reliance on LLMs
+
+## 12. Next steps & optional features
 
 * **Agentic RAG**  build an agent orchestration layer that decomposes complex tasks.
 * **UI**: minimal web UI to query and show provenance + highlight snippets.
